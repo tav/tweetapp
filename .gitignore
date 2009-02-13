@@ -2,8 +2,9 @@
 
 google_appengine
 
-# generated files
+# config/generated files
 
+source/config.py
 source/updated.py
 
 # hidden files
