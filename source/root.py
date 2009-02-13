@@ -82,6 +82,8 @@ try:
 except:
     pass
 
+STATIC_OAUTH_TIMESTAMP = 12345 # a workaround for clock skew/network lag
+
 # ------------------------------------------------------------------------------
 # utility functions
 # ------------------------------------------------------------------------------
@@ -160,7 +162,8 @@ class OAuthClient(object):
 
         if fetch.status_code != 200:
             raise ValueError(
-                "Error calling... Got return status: %i" % fetch.status_code
+                "Error calling... Got return status: %i [%r]" %
+                (fetch.status_code, fetch.content)
                 )
 
         return decode_json(fetch.content)
@@ -195,7 +198,7 @@ class OAuthClient(object):
         token.put()
 
         if self.oauth_callback:
-            oauth_callback = {'oauth_callback': oauth_callback}
+            oauth_callback = {'oauth_callback': self.oauth_callback}
         else:
             oauth_callback = {}
 
