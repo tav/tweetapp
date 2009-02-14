@@ -4,6 +4,7 @@ google_appengine
 
 # config/generated files
 
+source/app.yaml
 source/config.py
 source/updated.py
 
