@@ -4,9 +4,11 @@ google_appengine
 
 # config/generated files
 
-source/app.yaml
-source/config.py
-source/updated.py
+app/app.yaml
+app/source/config.py
+app/source/main.py
+app/source/updated.py
+app/static/favicon.ico
 
 # hidden files
 
