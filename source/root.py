@@ -24,10 +24,10 @@ from uuid import uuid4
 from wsgiref.headers import Headers
 
 # ------------------------------------------------------------------------------
-# extend sys.path to include the ``lib`` direktory
+# extend sys.path to include the ``third_party`` lib direktory
 # ------------------------------------------------------------------------------
 
-sys.path.insert(0, join_path(dirname(__file__), 'lib'))
+sys.path.insert(0, join_path(dirname(dirname(__file__)), 'third_party'))
 
 # ------------------------------------------------------------------------------
 # import other libraries
