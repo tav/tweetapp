@@ -2,7 +2,17 @@
 TweetApp
 ========
 
+Development is still happening and will stabilise before the end of February.
+Follow @tav on http://twitter.com/tav to keep up to date. Will have some
+documentation up by that time too...
+
 A framework for creating Twitter apps on Google App Engine.
+
+See the ``old`` directory for a standalone webapp oauth handler for Twitter.
+
+--------------------------------------------------------------------------------
+
+# THIS DOCUMENTATION IS NOT ACCURATE YET... IT WILL BE BY THE END OF FEB. THX!
 
 To start developing with TweetApp, grab the code::
 
@@ -17,21 +27,22 @@ Unzip the latest App Engine SDK as ``google_appengine`` inside the directory::
 
 Copy over the ``.in`` files and edit them to suit your app::
 
-  $ cp source/app.yaml.in source/app.yaml
-  $ cp source/config.py.in source/config.py
-  $ cp source/main.py.in source/main.py
+  $ cp app/source/config.py.in app/source/config.py
 
-You define services in ``main.py`` which is imported by ``root.py`` on startup.
+Likewise with the default ``app/app.yaml``.
+
+You define services in ``app/source/main.py`` which is imported by
+``app/root.py`` on startup.
 
 Test your app locally by running the dev_appserver, run.sh provides a wrapper::
 
-  $ ./run.sh
+  $ ./bin/run.sh
 
 You can pass additional parameters to it, e.g.::
 
-  $ ./run.sh --port=8001 --require_indexes
-  $ ./run.sh --help
+  $ ./bin/run.sh --port=8001 --require_indexes
+  $ ./bin/run.sh --help
 
 And, once you are happy with the app, deploy it using::
 
-  $ ./update.sh
+  $ ./bin/update.sh
