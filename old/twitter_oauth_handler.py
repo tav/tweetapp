@@ -145,7 +145,7 @@ class OAuthClient(object):
 
     # public methods
 
-    def get(self, api_method, **extra_params):
+    def get(self, api_method, http_method='GET', expected_status=(200,), **extra_params):
 
         if not (api_method.startswith('http://') or api_method.startswith('https://')):
             api_method = '%s%s%s' % (
@@ -157,10 +157,10 @@ class OAuthClient(object):
             self.token = OAuthAccessToken.get_by_key_name(self.get_cookie())
 
         fetch = urlfetch(self.get_signed_url(
-            api_method, self.token, **extra_params
+            api_method, self.token, http_method, **extra_params
             ))
 
-        if fetch.status_code != 200:
+        if fetch.status_code not in expected_status:
             raise ValueError(
                 "Error calling... Got return status: %i [%r]" %
                 (fetch.status_code, fetch.content)
@@ -168,7 +168,7 @@ class OAuthClient(object):
 
         return decode_json(fetch.content)
 
-    def post(self, api_method, **extra_params):
+    def post(self, api_method, http_method='POST', expected_status=(200,), **extra_params):
 
         if not (api_method.startswith('http://') or api_method.startswith('https://')):
             api_method = '%s%s%s' % (
@@ -180,10 +180,10 @@ class OAuthClient(object):
             self.token = OAuthAccessToken.get_by_key_name(self.get_cookie())
 
         fetch = urlfetch(url=api_method, payload=self.get_signed_body(
-            api_method, self.token, 'POST', **extra_params
-            ), method="POST")
+            api_method, self.token, http_method, **extra_params
+            ), method=http_method)
 
-        if fetch.status_code != 200:
+        if fetch.status_code not in expected_status:
             raise ValueError(
                 "Error calling... Got return status: %i [%r]" %
                 (fetch.status_code, fetch.content)
