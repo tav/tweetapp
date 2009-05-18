@@ -168,6 +168,29 @@ class OAuthClient(object):
 
         return decode_json(fetch.content)
 
+    def post(self, api_method, **extra_params):
+
+        if not (api_method.startswith('http://') or api_method.startswith('https://')):
+            api_method = '%s%s%s' % (
+                self.service_info['default_api_prefix'], api_method,
+                self.service_info['default_api_suffix']
+                )
+
+        if self.token is None:
+            self.token = OAuthAccessToken.get_by_key_name(self.get_cookie())
+
+        fetch = urlfetch(url=api_method, payload=self.get_signed_body(
+            api_method, self.token, 'POST', **extra_params
+            ), method="POST")
+
+        if fetch.status_code != 200:
+            raise ValueError(
+                "Error calling... Got return status: %i [%r]" %
+                (fetch.status_code, fetch.content)
+                )
+
+        return decode_json(fetch.content)
+
     def login(self):
 
         proxy_id = self.get_cookie()
@@ -255,6 +278,9 @@ class OAuthClient(object):
             )).content
 
     def get_signed_url(self, __url, __token=None, __meth='GET',**extra_params):
+        return '%s?%s'%(__url, self.get_signed_body(__url, __token, __meth, **extra_params))
+
+    def get_signed_body(self, __url, __token=None, __meth='GET',**extra_params):
 
         service_info = self.service_info
 
@@ -287,7 +313,7 @@ class OAuthClient(object):
             key, message, sha1
             ).digest().encode('base64')[:-1]
 
-        return '%s?%s' % (__url, urlencode(kwargs))
+        return urlencode(kwargs)
 
     # who stole the cookie from the cookie jar?
 
